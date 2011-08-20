@@ -2,17 +2,15 @@
 #kernel source is needed for vbox additions
 
 date > /etc/vagrant_box_build_time
-rpm -Uvh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm
 
 yum -y install gcc bzip2 make kernel-devel-`uname -r`
 
 #yum -y update
 #yum -y upgrade
 
-yum -y install gcc-c++ zlib-devel openssl-devel readline-devel sqlite3-devel git
+yum -y install gcc-c++ zlib-devel openssl-devel readline-devel sqlite3-devel
 
 yum -y erase wireless-tools gtk2 libX11 hicolor-icon-theme avahi freetype bitstream-vera-fonts
-
 
 yum -y clean all
 
@@ -25,12 +23,8 @@ rm -rf ./ruby-enterprise-1.8.7-2010.02/
 rm ruby-enterprise-1.8.7-2010.02.tar.gz
 
 #Installing chef & Puppet
-#/opt/ruby/bin/gem install chef --no-ri --no-rdoc
-#/opt/ruby/bin/gem install puppet --no-ri --no-rdoc
-
-# Get envpuppet install script
-wget http://192.168.0.195/~eric/isos/puppetinst.sh
-sh puppetinst_debian.sh
+/opt/ruby/bin/gem install chef --no-ri --no-rdoc
+/opt/ruby/bin/gem install puppet --no-ri --no-rdoc
 
 #Installing vagrant keys
 mkdir /home/vagrant/.ssh
@@ -48,7 +42,6 @@ sh /mnt/VBoxLinuxAdditions.run
 umount /mnt
 
 rm VBoxGuestAdditions_$VBOX_VERSION.iso
-
 
 sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
 
