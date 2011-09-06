@@ -15,9 +15,40 @@ yum -y erase wireless-tools gtk2 libX11 hicolor-icon-theme avahi freetype bitstr
 yum -y clean all
 rm /etc/yum.repos.d/{puppetlabs,epel}.repo
 
-# Get envpuppet install script
-wget http://192.168.0.195/~eric/isos/puppetinst.sh
-sh puppetinst.sh
+
+# Install envpuppet
+cd /usr/local/src
+git clone git://github.com/puppetlabs/puppet.git
+git clone git://github.com/puppetlabs/facter.git
+cd puppet
+git checkout tags/2.6.9
+cd ../facter
+git checkout tags/1.5.8
+export ENVPUPPET_BASEDIR=/usr/local/src
+cd /usr/local/bin
+
+#cp $ENVPUPPET_BASEDIR/puppet/ext/envpuppet .
+wget https://raw.github.com/jeffmccune/puppet/feature/2.6.x/6395/ext/envpuppet
+
+cat > /usr/local/bin/puppet << EOF
+#! /bin/bash
+export ENVPUPPET_BASEDIR=/usr/local/src
+eval \$(envpuppet)
+exec "\${ENVPUPPET_BASEDIR}"/puppet/bin/puppet \$@
+EOF
+
+cat > /usr/local/bin/facter << EOF
+#! /bin/bash
+export ENVPUPPET_BASEDIR=/usr/local/src
+eval \$(envpuppet)
+exec "\${ENVPUPPET_BASEDIR}"/facter/bin/facter \$@
+EOF
+
+chmod +x /usr/local/bin/puppet
+chmod +x /usr/local/bin/facter
+chmod +x /usr/local/bin/envpuppet
+echo "export ENVPUPPET_BASEDIR=/usr/local/src" >> /etc/bashrc
+
 
 # Installing vagrant keys
 mkdir /home/vagrant/.ssh

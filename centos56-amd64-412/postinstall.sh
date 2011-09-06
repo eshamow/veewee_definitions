@@ -19,26 +19,19 @@ yum -y install gcc-c++ zlib-devel openssl-devel readline-devel sqlite3-devel git
 yum -y erase wireless-tools gtk2 libX11 hicolor-icon-theme avahi freetype bitstream-vera-fonts
 yum -y clean all
 
-#Installing ruby
-wget http://rubyforge.org/frs/download.php/71096/ruby-enterprise-1.8.7-2010.02.tar.gz
-tar xzvf ruby-enterprise-1.8.7-2010.02.tar.gz
-./ruby-enterprise-1.8.7-2010.02/installer -a /opt/ruby --no-dev-docs --dont-install-useful-gems
-echo 'PATH=$PATH:/opt/ruby/bin'> /etc/profile.d/rubyenterprise.sh
-rm -rf ./ruby-enterprise-1.8.7-2010.02/
-rm ruby-enterprise-1.8.7-2010.02.tar.gz
-
-#Installing chef
-echo "Installing chef"
-/opt/ruby/bin/gem install chef --no-ri --no-rdoc || fail "Could not install chef"
+#Install Ruby 1.8.7
+cd /etc/yum.repos.d
+wget http://centos.karan.org/el5/ruby187/kbs-el5-ruby187.repo
+yum clean all
+yum -y install ruby rubygems
 
 # Install envpuppet
 cd /usr/local/src
 git clone git://github.com/puppetlabs/puppet.git
 git clone git://github.com/puppetlabs/facter.git
-pushd puppet
-git checkout tags/2.6.6
-popd
-pushd facter
+cd puppet
+git checkout tags/2.6.9
+cd ../facter
 git checkout tags/1.5.8
 export ENVPUPPET_BASEDIR=/usr/local/src
 cd /usr/local/bin
