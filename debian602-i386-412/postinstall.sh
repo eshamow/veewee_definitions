@@ -75,14 +75,13 @@ sudo apt-get install opscode-keyring # permanent upgradeable keyring
 export DEBIAN_FRONTEND=noninteractive
 apt-get -q -y install chef
 
-# Install vagrant keys
-mkdir -p /home/vagrant/.ssh
+#Installing vagrant keys
+mkdir /home/vagrant/.ssh
 chmod 700 /home/vagrant/.ssh
 cd /home/vagrant/.ssh
-curl -o /home/vagrant/.ssh/authorized_keys \
-  'http://github.com/mitchellh/vagrant/raw/master/keys/vagrant.pub'
-chmod 0600 /home/vagrant/.ssh/authorized_keys
-chown -R vagrant:vagrant /home/vagrant/.ssh
+wget --no-check-certificate 'http://github.com/mitchellh/vagrant/raw/master/keys/vagrant.pub' -O authorized_keys
+chmod 600 /home/vagrant/.ssh/authorized_keys
+chown -R vagrant /home/vagrant/.ssh
 
 # Tweak sshd to prevent DNS resolution (speed up logins)
 echo 'UseDNS no' >> /etc/ssh/sshd_config
