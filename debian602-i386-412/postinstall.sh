@@ -38,7 +38,7 @@ git checkout tags/2.6.9
 cd ../facter
 git checkout tags/1.5.8
 export ENVPUPPET_BASEDIR=/usr/local/src
-cd /usr/local/bin
+cd /usr/bin
 
 #cp $ENVPUPPET_BASEDIR/puppet/ext/envpuppet .
 wget https://raw.github.com/jeffmccune/puppet/feature/2.6.x/6395/ext/envpuppet
