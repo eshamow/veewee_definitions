@@ -39,23 +39,23 @@ cd /usr/local/bin
 #cp $ENVPUPPET_BASEDIR/puppet/ext/envpuppet .
 wget https://raw.github.com/jeffmccune/puppet/feature/2.6.x/6395/ext/envpuppet
 
-cat > /usr/local/bin/puppet << EOF
+cat > /usr/bin/puppet << EOF
 #! /bin/bash
 export ENVPUPPET_BASEDIR=/usr/local/src
 eval \$(envpuppet)
 exec "\${ENVPUPPET_BASEDIR}"/puppet/bin/puppet \$@
 EOF
 
-cat > /usr/local/bin/facter << EOF
+cat > /usr/bin/facter << EOF
 #! /bin/bash
 export ENVPUPPET_BASEDIR=/usr/local/src
 eval \$(envpuppet)
 exec "\${ENVPUPPET_BASEDIR}"/facter/bin/facter \$@
 EOF
 
-chmod +x /usr/local/bin/puppet
-chmod +x /usr/local/bin/facter
-chmod +x /usr/local/bin/envpuppet
+chmod +x /usr/bin/puppet
+chmod +x /usr/bin/facter
+chmod +x /usr/bin/envpuppet
 echo "export ENVPUPPET_BASEDIR=/usr/local/src" >> /etc/bashrc
 
 #Installing vagrant keys
