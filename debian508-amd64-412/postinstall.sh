@@ -10,71 +10,8 @@ apt-get clean
 cp /etc/sudoers /etc/sudoers.orig
 sed -i -e 's/vagrant ALL=(ALL) ALL/vagrant ALL=NOPASSWD:ALL/g' /etc/sudoers
 
-#Installing ruby
-apt-get -y install ruby ruby1.8-dev libopenssl-ruby1.8 rdoc ri irb make g++ libshadow-ruby1.8 rubygems
-
 #Installing prerequisite utilities
 apt-get -y install git-core lsb-release 
-
-
-# Install RubyGems 1.7.2
-#wget http://production.cf.rubygems.org/rubygems/rubygems-1.7.2.tgz
-#tar xzf rubygems-1.7.2.tgz
-#cd rubygems-1.7.2
-#/usr/bin/ruby setup.rb
-#cd ..
-#rm -rf rubygems-1.7.2*
-#ln -sfv /usr/bin/gem1.8 /usr/bin/gem
-
-# Install envpuppet
-cd /usr/local/src
-git clone git://github.com/puppetlabs/puppet.git
-git clone git://github.com/puppetlabs/facter.git
-cd puppet
-git checkout tags/2.6.9
-cd ../facter
-git checkout tags/1.5.8
-export ENVPUPPET_BASEDIR=/usr/local/src
-cd /usr/bin
-
-#cp $ENVPUPPET_BASEDIR/puppet/ext/envpuppet .
-wget https://raw.github.com/jeffmccune/puppet/feature/2.6.x/6395/ext/envpuppet
-
-cat > /usr/bin/puppet << EOF
-#! /bin/bash
-export ENVPUPPET_BASEDIR=/usr/local/src
-eval \$(envpuppet)
-exec "\${ENVPUPPET_BASEDIR}"/puppet/bin/puppet \$@
-EOF
-
-cat > /usr/bin/facter << EOF
-#! /bin/bash
-export ENVPUPPET_BASEDIR=/usr/local/src
-eval \$(envpuppet)
-exec "\${ENVPUPPET_BASEDIR}"/facter/bin/facter \$@
-EOF
-
-chmod +x /usr/bin/puppet
-chmod +x /usr/bin/facter
-chmod +x /usr/bin/envpuppet
-echo "export ENVPUPPET_BASEDIR=/usr/local/src" >> /etc/bashrc
-
-## Install chef
-#Add OpsCode deb repository
-echo "deb http://apt.opscode.com/ `lsb_release -cs`-0.10 main" | sudo tee /etc/apt/sources.list.d/opscode.list
-sudo gpg --keyserver keys.gnupg.net --recv-keys 83EF826A
-sudo mkdir /etc/apt/trusted.gpg.d
-sudo gpg --export packages@opscode.com | sudo tee /etc/apt/trusted.gpg.d/opscode-keyring.gpg > /dev/null
-sudo apt-key add ~/.gnupg/pubring.gpg
-sudo apt-get update
-
-#/opt/ruby/bin/gem install chef --no-ri --no-rdoc
-export DEBIAN_FRONTEND=noninteractive
-apt-get -q -y --force install chef
-
-# Installing chef & Puppet
-#/usr/bin/gem install chef --no-ri --no-rdoc
-#/usr/bin/gem install puppet --no-ri --no-rdoc
 
 #Installing vagrant keys
 mkdir /home/vagrant/.ssh
