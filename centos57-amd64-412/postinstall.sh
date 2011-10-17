@@ -19,6 +19,45 @@ yum -y install gcc-c++ zlib-devel openssl-devel readline-devel sqlite3-devel git
 yum -y erase wireless-tools gtk2 libX11 hicolor-icon-theme avahi freetype bitstream-vera-fonts
 yum -y clean all
 
+#Install Ruby 1.8.7
+cd /etc/yum.repos.d
+wget http://centos.karan.org/el5/ruby187/kbs-el5-ruby187.repo
+yum clean all
+yum -y install ruby rubygems
+
+# Install envpuppet
+cd /usr/local/src
+git clone git://github.com/puppetlabs/puppet.git
+git clone git://github.com/puppetlabs/facter.git
+cd puppet
+git checkout tags/2.6.9
+cd ../facter
+git checkout tags/1.5.8
+export ENVPUPPET_BASEDIR=/usr/local/src
+cd /usr/bin
+
+#cp $ENVPUPPET_BASEDIR/puppet/ext/envpuppet .
+wget https://raw.github.com/jeffmccune/puppet/feature/2.6.x/6395/ext/envpuppet
+
+cat > /usr/bin/puppet << EOF
+#! /bin/bash
+export ENVPUPPET_BASEDIR=/usr/local/src
+eval \$(envpuppet)
+exec "\${ENVPUPPET_BASEDIR}"/puppet/bin/puppet \$@
+EOF
+
+cat > /usr/bin/facter << EOF
+#! /bin/bash
+export ENVPUPPET_BASEDIR=/usr/local/src
+eval \$(envpuppet)
+exec "\${ENVPUPPET_BASEDIR}"/facter/bin/facter \$@
+EOF
+
+chmod +x /usr/bin/puppet
+chmod +x /usr/bin/facter
+chmod +x /usr/bin/envpuppet
+echo "export ENVPUPPET_BASEDIR=/usr/local/src" >> /etc/bashrc
+
 #Installing vagrant keys
 mkdir /home/vagrant/.ssh
 chmod 700 /home/vagrant/.ssh
