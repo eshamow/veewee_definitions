@@ -1,0 +1,14 @@
+These definitions are intended for use with my modified session.rb:
+
+https://github.com/eshamow/veewee/blob/master/lib/veewee/session.rb
+
+This version is current for Veewee version x.x.x
+
+Configurations have been tested against:
+Veewee v0.2.0-65-g6096fa8 (current git)
+Vagrant 0.8.6
+VirtualBox 4.1.4
+
+Please note that these veewee builds will not pass validation testing with the
+existing veewee tests, as they don't install Ruby, Puppet, or Chef.  Those
+installations are handled in my Vagrant configuration, available shortly
