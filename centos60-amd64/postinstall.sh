@@ -67,7 +67,9 @@ umount /mnt
 rm VBoxGuestAdditions_$VBOX_VERSION.iso
 
 sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
+sed -i 's/^.*eth[12].*$//' /etc/udev/rules.d/70-persistent-net.rules
 
+cat /etc/udev/rules.d/70-persistent-net.rules
 dd if=/dev/zero of=/tmp/clean || rm /tmp/clean
 
 exit
