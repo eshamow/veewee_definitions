@@ -36,4 +36,6 @@ Veewee::Session.declare({
   :shutdown_cmd => "halt -p",
   :postinstall_files => [ "postinstall.sh" ],
   :postinstall_timeout => "10000"
+  :interfaces => ["nat","hostonly"],
+  :hostonly_network => "vboxnet0"
 })
