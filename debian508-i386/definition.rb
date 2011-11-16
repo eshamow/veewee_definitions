@@ -21,6 +21,7 @@ Veewee::Session.declare({
     'debconf/frontend=noninteractive ',
     'console-setup/ask_detect=false ',
     'console-keymaps-at/keymap=us ',
+    'interface=eth0',
     '<Enter>'
   ],
   :kickstart_port => "7122",
@@ -35,7 +36,7 @@ Veewee::Session.declare({
   :sudo_cmd => "echo '%p'|sudo -S sh '%f'",
   :shutdown_cmd => "halt -p",
   :postinstall_files => [ "postinstall.sh" ],
-  :postinstall_timeout => "10000"
+  :postinstall_timeout => "10000",
   :interfaces => ["nat","hostonly"],
   :hostonly_network => "vboxnet0"
 })

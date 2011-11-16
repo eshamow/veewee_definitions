@@ -3,7 +3,7 @@ date > /etc/vagrant_box_build_time
 #Updating the box
 apt-get -y update
 apt-get -y install linux-headers-$(uname -r) build-essential
-apt-get -y install zlib1g-dev libssl-dev libreadline5-dev
+apt-get -y install zlib1g-dev libssl-dev libreadline5-dev nfs-common
 apt-get clean
 
 #Setting up sudo
@@ -41,6 +41,10 @@ rm -f /EMPTY
 # Removing leftover leases and persistent rules
 echo "cleaning up dhcp leases"
 rm /var/lib/dhcp3/*
+
+sed -i 's/^.*eth[12].*$//' /etc/udev/rules.d/70-persistent-net.rules
+
+cat /etc/udev/rules.d/70-persistent-net.rules
 
 echo "Adding a 2 sec delay to the interface up, to make the dhclient happy"
 echo "pre-up sleep 2" >> /etc/network/interfaces
